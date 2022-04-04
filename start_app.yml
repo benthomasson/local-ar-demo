@@ -1,0 +1,20 @@
+---
+- name: start app
+  gather_facts: False
+  hosts: localhost
+  tasks:
+    - shell: ./run_app.sh & sleep 1
+      async: 100000000
+      poll: 0
+    - wait_for:
+        path: fact.yml
+        state: present
+    - include_vars:
+        file: fact.yml
+    - set_fact:
+        cacheable: true
+        pid: "{{pid}}"
+
+
+
+...
