@@ -6,7 +6,10 @@ def main(queue, args):
 
     names = args.get("names", None)
 
-    original_processes = {p.pid: p.name() for p in psutil.process_iter()}
+    try:
+        original_processes = {p.pid: p.name() for p in psutil.process_iter()}
+    except psutil.NoSuchProcess:
+        original_processes = {}
     if names is not None:
         original_processes = {
             pid: name for pid, name in original_processes.items() if name in names
@@ -14,7 +17,10 @@ def main(queue, args):
 
     while True:
         time.sleep(1)
-        current_processes = {p.pid: p.name() for p in psutil.process_iter()}
+        try:
+            current_processes = {p.pid: p.name() for p in psutil.process_iter()}
+        except psutil.NoSuchProcess:
+            continue
         if names is not None:
             current_processes = {
                 pid: name for pid, name in current_processes.items() if name in names

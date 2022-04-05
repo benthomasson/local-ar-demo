@@ -2,7 +2,7 @@
 - name: Automatic Remediation of a webserver
   hosts: localhost
   sources:
-    - name: ping web server
+    - name: check web server
       url_check:
         urls:
           - http://localhost:5000
@@ -25,5 +25,3 @@
           name: start_app.yml
           copy_files: true
           post_events: true
-
-...
